@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin"); // <-- NEW
 const path = require("path");
 
 module.exports = {
-    mode: "none",
+    mode: "production",
     entry: "./src/cube.js",
     output: {
         filename: "main.js",
