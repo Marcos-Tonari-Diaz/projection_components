@@ -10,7 +10,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 //create a blue LineBasicMaterial
-const material = new THREE.LineBasicMaterial({ color: 0x0000ff });
+const material = new THREE.LineBasicMaterial({ color: 0x000fff });
 const points = [];
 points.push(new THREE.Vector3(- 10, 0, 0));
 points.push(new THREE.Vector3(0, 10, 0));
