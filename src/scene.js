@@ -1,4 +1,5 @@
 import * as THREE from "three"
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ProjectionCenter } from "./projection_center";
 import { Vertex } from "./vertex";
 
@@ -25,5 +26,17 @@ let projected_lines_group = projection_center.projectLines(vertices)
 scene.add(projection_center.getMesh());
 scene.add(vertex_group);
 scene.add(projected_lines_group);
+scene.background = new THREE.Color('Moccasin');
 
-renderer.render(scene, camera);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0, 0);
+controls.update();
+controls.enableDamping = true;
+
+function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+}
+
+animate()
