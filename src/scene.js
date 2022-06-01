@@ -14,7 +14,7 @@ document.body.appendChild(renderer.domElement);
 
 let vertices = []
 vertices.push(new Vertex(5, 0, 0, 'white'));
-vertices.push(new Vertex(5, 2, 0, 'white'));
+vertices.push(new Vertex(5, 3, 0, 'white'));
 vertices.push(new Vertex(5, 0, 2, 'white'));
 
 let vertex_group = new THREE.Group();
