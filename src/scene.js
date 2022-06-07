@@ -9,7 +9,7 @@ const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerH
 camera.position.set(0, 0, 100);
 camera.lookAt(0, 0, 0);
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
@@ -23,9 +23,9 @@ vertices.forEach((vertex) => vertex_group.add(vertex.getMesh()))
 
 let projection_center_position = new Vector3(0, 0, 0)
 let projection_center = new ProjectionCenter(projection_center_position.x, projection_center_position.y, projection_center_position.z);
-let look_at_vector = new Vector3(0, 0, 0)
+let look_at_vector = new Vector3(5, 1, 1)
 projection_center.lookAt(look_at_vector);
-const look_at_arrow = new THREE.ArrowHelper({ dir: look_at_vector, origin: projection_center_position })
+let look_at_arrow = new THREE.ArrowHelper(look_at_vector.normalize(), projection_center_position, 0.9, '#a31c62', 0.25, 0.08)
 let projected_lines_group = projection_center.projectLines(vertices)
 
 scene.add(projection_center.vertex_representation.getMesh());
