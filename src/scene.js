@@ -1,4 +1,5 @@
 import * as THREE from "three"
+import { Vector2, Vector3 } from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ProjectionCenter } from "./projection_center";
 import { Vertex } from "./vertex";
@@ -20,12 +21,17 @@ vertices.push(new Vertex(5, 0, 2, 'white'));
 let vertex_group = new THREE.Group();
 vertices.forEach((vertex) => vertex_group.add(vertex.getMesh()))
 
-let projection_center = new ProjectionCenter(0, 0, 0, 'crimson');
+let projection_center_position = new Vector3(0, 0, 0)
+let projection_center = new ProjectionCenter(projection_center_position.x, projection_center_position.y, projection_center_position.z);
+let look_at_vector = new Vector3(0, 0, 0)
+projection_center.lookAt(look_at_vector);
+const look_at_arrow = new THREE.ArrowHelper({ dir: look_at_vector, origin: projection_center_position })
 let projected_lines_group = projection_center.projectLines(vertices)
 
-scene.add(projection_center.getMesh());
+scene.add(projection_center.vertex_representation.getMesh());
 scene.add(vertex_group);
 scene.add(projected_lines_group);
+scene.add(look_at_arrow);
 scene.background = new THREE.Color('Moccasin');
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -38,5 +44,8 @@ function animate() {
     controls.update();
     renderer.render(scene, camera);
 }
+
+console.log(vertices[0].mesh.position)
+console.log(vertices[0].mesh.matrixWorld)
 
 animate()
