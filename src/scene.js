@@ -41,6 +41,7 @@ scene.add(projected_meshlines);
 scene.add(look_at_arrow);
 scene.add(projection_plane.getMesh());
 scene.add(projection_plane.getPointMeshes());
+scene.add(projection_plane.getEdegeMeshes());
 // scene.add(projection_plane.getPlaneHelper());
 scene.add(projection_plane.getGrid());
 scene.background = new THREE.Color('Moccasin');

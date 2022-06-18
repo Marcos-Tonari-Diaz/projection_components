@@ -1,8 +1,16 @@
 import * as THREE from "three"
 import { Vector3 } from "three";
+import { MeshLine, MeshLineMaterial } from "three.meshline";
 
 export class ProjectionPlane {
     constructor(normal_vector, distance_origin) {
+        this.point_meshes = new THREE.Group();
+        this.edge_meshes = new THREE.Group();
+        this.edge_pairs = []
+
+        this.plane = new THREE.Plane(normal_vector, -distance_origin);
+        this.plane_helper = new THREE.PlaneHelper(this.plane, 10);
+
         const geometry = new THREE.PlaneGeometry(10, 10);
         const material = new THREE.MeshBasicMaterial(
             {
@@ -14,11 +22,8 @@ export class ProjectionPlane {
         this.plane_mesh = new THREE.Mesh(geometry, material);
         this.plane_mesh.lookAt(normal_vector);
         this.plane_mesh.position.addScaledVector(normal_vector, distance_origin);
-        this.point_meshes = new THREE.Group();
-        // this.plane_mesh.add(this.point_meshes);
 
-        this.plane = new THREE.Plane(normal_vector, -distance_origin);
-        this.plane_helper = new THREE.PlaneHelper(this.plane, 10);
+
         this.grid = new THREE.GridHelper(10, 10);
         this.grid.geometry.rotateX(THREE.MathUtils.degToRad(90));
         this.grid.position.x = this.plane_mesh.position.x;
@@ -34,6 +39,9 @@ export class ProjectionPlane {
     }
     getPointMeshes() {
         return this.point_meshes;
+    }
+    getEdegeMeshes() {
+        return this.edge_meshes;
     }
     getPlaneHelper() {
         return this.plane_helper;
@@ -62,13 +70,25 @@ export class ProjectionPlane {
             this.plane.intersectLine(line, intersection_point)
             this.addPlanePoint(intersection_point)
         }
+        const points = this.point_meshes.children
+        this.addPointPair([points[0].position, points[1].position])
+        this.addPointPair([points[1].position, points[2].position])
+        this.addPointPair([points[0].position, points[2].position])
+        this.addIntersectionEdges();
     }
-    addPointPair(point_pair) {
-        this.points.add(point_pair[0])
-        this.points.add(point_pair[1])
-        // this.addEdge(point_pair)
+    addPointPair(pair) {
+        this.edge_pairs.push(pair);
     }
-    // addEdge(point_pair) {
-
-    // }
+    addIntersectionEdges() {
+        for (const pair of this.edge_pairs) {
+            this.addEdge(pair[0], pair[1]);
+        }
+    }
+    addEdge(start, end) {
+        const material = new MeshLineMaterial({ color: 'red', lineWidth: 0.05 });
+        let geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
+        let meshline = new MeshLine();
+        meshline.setGeometry(geometry);
+        this.edge_meshes.add(new THREE.Mesh(meshline, material));
+    }
 }
