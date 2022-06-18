@@ -22,9 +22,6 @@ export class ProjectionCenter extends PerspectiveCamera {
         }
         return projected_lines_group
     }
-    // projectPoint(vertex) {
-    //     this.projectionMatrix.multiply()
-    // }
     setLookAt() { }
     getArrowHelper() { }
 }
