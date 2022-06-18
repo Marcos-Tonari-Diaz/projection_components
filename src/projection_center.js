@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import { PerspectiveCamera, Vector3 } from "three";
+import { Line3, PerspectiveCamera, Vector3 } from "three";
 import { Vertex } from "./vertex";
 import { MeshLine, MeshLineMaterial, MeshLineRaycast } from 'three.meshline';
 
@@ -11,17 +11,21 @@ export class ProjectionCenter extends PerspectiveCamera {
         this.vertex_representation = new Vertex(x, y, z, 'crimson')
     }
     projectLines(vertices) {
-        const projected_lines_group = new THREE.Group();
+        const projected_meshlines = new THREE.Group();
+        this.projected_lines = []
         const material = new MeshLineMaterial({ color: 'skyblue', lineWidth: 0.05 });
         for (const vertex of vertices) {
             let points = [vertex.getMesh().position, this.position]
+            let line = new Line3(vertex.getMesh().position, this.position)
             let geometry = new THREE.BufferGeometry().setFromPoints(points);
-            let line = new MeshLine();
-            line.setGeometry(geometry)
-            projected_lines_group.add(new THREE.Mesh(line, material))
+            let meshline = new MeshLine();
+            meshline.setGeometry(geometry)
+            this.projected_lines.push(line)
+            projected_meshlines.add(new THREE.Mesh(meshline, material))
         }
-        return projected_lines_group
+        return projected_meshlines
     }
+    getProjectedLines() { return this.projected_lines }
     setLookAt() { }
     getArrowHelper() { }
 }
