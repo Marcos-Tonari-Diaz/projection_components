@@ -71,10 +71,10 @@ export class ProjectionPlane {
             this.addPlanePoint(intersection_point)
         }
         const points = this.point_meshes.children
-        this.addPointPair([points[0].position, points[1].position])
-        this.addPointPair([points[1].position, points[2].position])
-        this.addPointPair([points[0].position, points[2].position])
-        this.addIntersectionEdges();
+        // this.addPointPair([points[0].position, points[1].position])
+        // this.addPointPair([points[1].position, points[2].position])
+        // this.addPointPair([points[0].position, points[2].position])
+        // this.addIntersectionEdges();
     }
     addPointPair(pair) {
         this.edge_pairs.push(pair);
@@ -85,7 +85,7 @@ export class ProjectionPlane {
         }
     }
     addEdge(start, end) {
-        const material = new MeshLineMaterial({ color: 'red', lineWidth: 0.05 });
+        const material = new MeshLineMaterial({ color: 'red', lineWidth: 0.03 });
         let geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
         let meshline = new MeshLine();
         meshline.setGeometry(geometry);

@@ -8,7 +8,7 @@ export class ProjectionCenter extends PerspectiveCamera {
         super({ near: 2 })
         this.position.set(x, y, z)
         this.lookAt(0, 0, 0)
-        this.vertex_representation = new Vertex(x, y, z, 'crimson')
+        this.vertex_representation = new Vertex(x, y, z, 'crimson', 0.5)
     }
     projectLines(vertices) {
         const projected_meshlines = new THREE.Group();
