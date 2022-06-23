@@ -10,4 +10,10 @@ export class Vertex {
     getMesh() {
         return this.mesh;
     }
+    setPosition(x, y, z) {
+        this.mesh.position.set(x, y, z);
+    }
+    getPosition() {
+        return this.mesh.position.clone();
+    }
 }

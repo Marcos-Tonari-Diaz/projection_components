@@ -12,25 +12,40 @@ export class Box {
         });
         this.mesh = new THREE.Mesh(cube_geometry, cube_material);
         this.mesh.position.copy(position)
-        this.vertices_offsets = []
-        this.positionBufferToVertices(this.mesh.geometry.attributes.position, this.vertices_offsets);
-        this.vertices = this.vertices_offsets.map(() => new Vertex(0, 0, 0, 'white', 0.2))
-        this.updateVerticesPositions(position)
+        this.vertices = []
+        this.createVerticesFromPositionBuffer(this.mesh.geometry.attributes.position, this.vertices);
     }
-    updateVerticesPositions(position) {
-        for (let vertex_index in this.vertices) {
-            this.vertices[vertex_index].getMesh().position.addVectors(this.vertices_offsets[vertex_index], position)
+    createVerticesFromPositionBuffer(position_buffer, vertices) {
+        for (let vertex_index = 0; vertex_index < position_buffer.count; vertex_index += 3) {
+            const vertex = new Vertex(
+                position_buffer.array[vertex_index],
+                position_buffer.array[vertex_index + 1],
+                position_buffer.array[vertex_index + 2],
+                'white',
+                0.2
+            )
+            this.addBoxPositionOffsetToVertex(vertex)
+            this.vertices.push(vertex);
         }
     }
-    positionBufferToVertices(position_buffer, vertices) {
+    addBoxPositionOffsetToVertex(vertex) {
+        const vertex_global_position = new Vector3(0, 0, 0);
+        vertex_global_position.addVectors(vertex.getPosition(), this.mesh.position);
+        vertex.setPosition(vertex_global_position.x, vertex_global_position.y, vertex_global_position.z);
+    }
+    updateVerticesFromPositionBuffer(position_buffer, vertices) {
         for (let vertex_index = 0; vertex_index < position_buffer.count; vertex_index += 3) {
-            const vertex = new THREE.Vector3(
+            vertices[Math.floor(vertex_index / 3)].setPosition(
                 position_buffer.array[vertex_index],
                 position_buffer.array[vertex_index + 1],
                 position_buffer.array[vertex_index + 2],
             )
-            vertices.push(vertex)
         }
+    }
+    rotateY(degrees) {
+        this.mesh.geometry.rotateY(THREE.MathUtils.degToRad(degrees));
+        this.updateVerticesFromPositionBuffer(this.mesh.geometry.attributes.position, this.vertices);
+        this.vertices.forEach((vertex) => this.addBoxPositionOffsetToVertex(vertex));
     }
     getMesh() { return this.mesh; }
     getVertices() { return this.vertices; }

@@ -28,8 +28,9 @@ let look_at_arrow = new THREE.ArrowHelper(look_at_vector.normalize(), projection
 let box_position = new Vector3(0, 0, 0);
 box_position.copy(projection_center_position);
 box_position.addScaledVector(look_at_vector, 10);
-const box_size = 9;
+const box_size = 2;
 const box = new Box(box_size, box_size, box_size, box_position);
+box.rotateY(40)
 
 // let vertices = cube_geometry.vertices
 // let vertices = []
