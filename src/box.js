@@ -13,7 +13,12 @@ export class Box {
         this.mesh = new THREE.Mesh(cube_geometry, cube_material);
         this.mesh.position.copy(position)
         this.vertices = []
+        this.vertices_offset = []
         this.createVerticesFromPositionBuffer(this.mesh.geometry.attributes.position, this.vertices);
+        this.edge_vertice_index_pairs = []
+        // console.log(this.vertices_offset[0].distanceTo(this.vertices_offset[1]))
+        this.pairEdgeVertices()
+        console.log(this.edge_vertice_index_pairs)
     }
     createVerticesFromPositionBuffer(position_buffer, vertices) {
         for (let vertex_index = 0; vertex_index < position_buffer.count; vertex_index += 3) {
@@ -24,6 +29,7 @@ export class Box {
                 'white',
                 0.2
             )
+            this.vertices_offset.push(vertex.getPosition())
             this.addBoxPositionOffsetToVertex(vertex)
             this.vertices.push(vertex);
         }
@@ -32,6 +38,16 @@ export class Box {
         const vertex_global_position = new Vector3(0, 0, 0);
         vertex_global_position.addVectors(vertex.getPosition(), this.mesh.position);
         vertex.setPosition(vertex_global_position.x, vertex_global_position.y, vertex_global_position.z);
+    }
+    pairEdgeVertices() {
+        for (let first_index = 0; first_index < this.vertices_offset.length; first_index++) {
+            for (let second_index = first_index; second_index < this.vertices_offset.length; second_index++) {
+                let distance = this.vertices_offset[first_index].distanceTo(this.vertices_offset[second_index])
+                if (distance == 2) {
+                    this.edge_vertice_index_pairs.push([first_index, second_index])
+                }
+            }
+        }
     }
     updateVerticesFromPositionBuffer(position_buffer, vertices) {
         for (let vertex_index = 0; vertex_index < position_buffer.count; vertex_index += 3) {
@@ -49,4 +65,5 @@ export class Box {
     }
     getMesh() { return this.mesh; }
     getVertices() { return this.vertices; }
+    getEdgeVerticesIndexPairs() { return this.edge_vertice_index_pairs }
 }

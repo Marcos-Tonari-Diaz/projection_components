@@ -6,7 +6,6 @@ export class ProjectionPlane {
     constructor(normal_vector, distance_origin) {
         this.point_meshes = new THREE.Group();
         this.edge_meshes = new THREE.Group();
-        this.edge_pairs = []
 
         this.plane = new THREE.Plane(normal_vector, -distance_origin);
         this.plane_helper = new THREE.PlaneHelper(this.plane, 10);
@@ -51,7 +50,7 @@ export class ProjectionPlane {
     }
     addPlanePoint(point_vector) {
         const circle = new THREE.Shape();
-        circle.absarc(0, 0, 0.15)
+        circle.absarc(0, 0, 0.05)
         const geometry = new THREE.ShapeGeometry(circle, 50);
         const material = new THREE.MeshBasicMaterial({
             color: 'red',
@@ -70,18 +69,11 @@ export class ProjectionPlane {
             this.plane.intersectLine(line, intersection_point)
             this.addPlanePoint(intersection_point)
         }
+    }
+    addIntersectionEdges(edge_vertices_index_pairs) {
         const points = this.point_meshes.children
-        // this.addPointPair([points[0].position, points[1].position])
-        // this.addPointPair([points[1].position, points[2].position])
-        // this.addPointPair([points[0].position, points[2].position])
-        // this.addIntersectionEdges();
-    }
-    addPointPair(pair) {
-        this.edge_pairs.push(pair);
-    }
-    addIntersectionEdges() {
-        for (const pair of this.edge_pairs) {
-            this.addEdge(pair[0], pair[1]);
+        for (const index_pair of edge_vertices_index_pairs) {
+            this.addEdge(points[index_pair[0]].position, points[index_pair[1]].position);
         }
     }
     addEdge(start, end) {

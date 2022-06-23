@@ -47,7 +47,8 @@ let projected_meshlines = projection_center.projectLines(vertices)
 
 // let projected_point = new Vector3(0, 0, 0);
 // projection_plane.addPlanePoint(projected_point)
-projection_plane.intersectLines(projection_center.getProjectedLines())
+projection_plane.intersectLines(projection_center.getProjectedLines());
+projection_plane.addIntersectionEdges(box.getEdgeVerticesIndexPairs());
 
 
 scene.add(projection_center.vertex_representation.getMesh());
