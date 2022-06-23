@@ -2,11 +2,13 @@
 
 ### ThreeJS components for a future Perspective Projection webpage
 
+![](demo.gif)
+
 This project uses only the ThreeJs noed module and webpack to facilitate prototyping.
 
 Steps to run:
 
-1. npm start - runs webpack-dev-server
+1. npm start (runs webpack-dev-server)
 
 OR
 
