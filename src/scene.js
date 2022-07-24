@@ -1,24 +1,18 @@
 import * as THREE from "three"
-import { Vector2, Vector3 } from "three";
+import { Vector3 } from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { Box } from "./box";
 import { ProjectionCenter } from "./projection_center";
 import { ProjectionPlane } from "./projection_plane";
-import { Vertex } from "./vertex";
 
-function animate() {
-    requestAnimationFrame(animate);
-    controls.update();
-    renderer.render(scene, camera);
-}
 
-export function setupScene() {
+export function setupScene(projection_canvas) {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500);
     camera.position.set(0, 0, 100);
     camera.lookAt(0, 0, 0);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ canvas: projection_canvas, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
@@ -74,5 +68,11 @@ export function setupScene() {
     controls.target.set(0, 0, 0);
     controls.update();
     controls.enableDamping = true;
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+    }
     animate()
 }
+
