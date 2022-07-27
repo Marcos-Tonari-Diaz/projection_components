@@ -1,0 +1,1 @@
+export function setupScene(canvas: any): void;

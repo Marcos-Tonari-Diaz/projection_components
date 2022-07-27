@@ -1,12 +1,16 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin"); // <-- NEW
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
 module.exports = {
-    mode: "production",
-    entry: "./src/cube.js",
+    mode: "none",
+    entry: "./src/scene_init.js",
+
     output: {
         filename: "main.js",
         path: path.resolve(__dirname, "dist"),
+    },
+    devServer: {
+        static: './dist',
     },
     plugins: [
         new HtmlWebpackPlugin({
