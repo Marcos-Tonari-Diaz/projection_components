@@ -13,7 +13,7 @@ export function setupScene(projection_canvas) {
     camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({ canvas: projection_canvas, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(projection_canvas.clientWidth, projection_canvas.clientHeight);
     document.body.appendChild(renderer.domElement);
 
     let look_at_vector = new Vector3(5, 1, 1).normalize()
